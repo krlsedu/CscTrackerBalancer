@@ -1,0 +1,17 @@
+version: '3'
+
+networks:
+  backend:
+    external: true
+
+services:
+  balancer:
+    container_name: balancer
+    hostname: balancer
+    image: krlsedu/csctracker-balancer
+    restart: always
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/postgres
+    networks:
+      - backend
+    entrypoint: "java -Djava.security.egd=file:/dev/./urandom -XX:+UseSerialGC -jar app.jar"

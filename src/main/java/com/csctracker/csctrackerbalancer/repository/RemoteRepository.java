@@ -56,7 +56,6 @@ public class RemoteRepository {
         checkResponse(response);
 
         String body = response.getBody();
-        log.info("Getted " + url);
         return body;
     }
 

@@ -42,9 +42,9 @@ public class RouteService {
 
     public void lockUnlock(PodDTO podDTO) {
         if (podDTO.isLocked()) {
-            unlockPod(podDTO);
-        } else {
             lockPod(podDTO);
+        } else {
+            unlockPod(podDTO);
         }
     }
 
@@ -93,11 +93,21 @@ public class RouteService {
         if (podNum >= pods.get(service).size()) {
             podNum = 0;
         }
+        var count = 0;
         while (isLocked(pods.get(service).get(podNum))) {
             log.info("Pod locked: " + pods.get(service).get(podNum));
             podNum++;
             if (podNum >= pods.get(service).size()) {
                 podNum = 0;
+            }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                log.error(e.getMessage());
+            }
+            count++;
+            if (count > 1000) {
+                throw new RuntimeException("No pod available");
             }
         }
         nextPod.put(service, podNum + 1);
@@ -113,10 +123,12 @@ public class RouteService {
     private RouteDTO getPod(String service) {
         if (pods.get(service) != null && !pods.get(service).isEmpty()) {
             var pod = getUlockedPod(service);
+            if (pod == null) {
+                return null;
+            }
             var route = new RouteDTO();
             route.setDestination("http://" + pod.getHost() + ":" + pod.getPort());
             route.setPod(pod);
-            log.info("Pod: " + pod.getPodId() + " -> " + pod.getHost() + ":" + pod.getPort());
             return route;
         }
         return null;

@@ -34,6 +34,7 @@ public class RemoteRepository {
     }
 
     public String dispachGet(String url) {
+        log.info("Dispatching GET to " + url);
         var request = Unirest.get(url);
 
         var headers = RequestInfo.getHeaders();
@@ -60,14 +61,12 @@ public class RemoteRepository {
     }
 
     public String dispachPost(String url) {
-        return dispachPost(url, null);
-    }
-
-    public String dispachPost(String url, String userName) {
+        log.info("Dispatching POST to " + url);
         return dispach(Unirest.post(url));
     }
 
     public String dispachDelete(String url) {
+        log.info("Dispatching DELETE to " + url);
         return dispach(Unirest.delete(url));
     }
 

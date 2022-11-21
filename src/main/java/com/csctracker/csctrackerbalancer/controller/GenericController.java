@@ -1,11 +1,13 @@
 package com.csctracker.csctrackerbalancer.controller;
 
 import com.csctracker.csctrackerbalancer.service.GenericService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Slf4j
 public class GenericController {
 
     private final GenericService genericService;
@@ -19,6 +21,7 @@ public class GenericController {
         try {
             return ResponseEntity.ok(genericService.get(service, object));
         } catch (Exception e) {
+            log.error("GET error in -> " + service + "/" + object + " -> " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
@@ -28,6 +31,7 @@ public class GenericController {
         try {
             return ResponseEntity.ok(genericService.get(service, object + "/" + sub));
         } catch (Exception e) {
+            log.error("GET error in -> " + service + "/" + object + "/" + sub + " -> " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
@@ -38,6 +42,7 @@ public class GenericController {
         try {
             return new ResponseEntity<>(genericService.save(service, object), HttpStatus.CREATED);
         } catch (Exception e) {
+            log.error("POST error in -> " + service + "/" + object + " -> " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
@@ -45,9 +50,10 @@ public class GenericController {
     @PostMapping(value = "/{service}/{object}/{sub}", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> save(@RequestBody String body, @PathVariable String service, @PathVariable String object, @PathVariable String sub) {
-        try{
+        try {
             return new ResponseEntity<>(genericService.save(service, object + "/" + sub), HttpStatus.CREATED);
         } catch (Exception e) {
+            log.error("POST error in -> " + service + "/" + object + "/" + sub + " -> " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
@@ -57,6 +63,7 @@ public class GenericController {
         try {
             return ResponseEntity.ok(genericService.delete(service, object));
         } catch (Exception e) {
+            log.error("DELETE error in -> " + service + "/" + object + " -> " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }

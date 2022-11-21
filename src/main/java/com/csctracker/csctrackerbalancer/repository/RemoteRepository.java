@@ -39,12 +39,19 @@ public class RemoteRepository {
 
         var headers = RequestInfo.getHeaders();
 
-        for (var header : headers.entrySet()) {
-            request.header(header.getKey(), header.getValue());
-        }
-
         if (request.getHeaders().get("userName") == null || request.getHeaders().get("userName").isEmpty()) {
             request.header("userName", userInfoRemoteService.getUser().getEmail());
+        }
+
+        for (var header : headers.entrySet()) {
+            switch (header.getKey().toLowerCase()) {
+                case "content-type":
+                case "authorization":
+                    request.header(header.getKey(), header.getValue());
+                    break;
+                default:
+                    break;
+            }
         }
 
         var parameters = RequestInfo.getParameters();

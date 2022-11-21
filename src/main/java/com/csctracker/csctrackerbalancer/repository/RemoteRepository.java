@@ -54,7 +54,12 @@ public class RemoteRepository {
 
         HttpResponse<String> response = request
                 .asString();
-        checkResponse(response);
+        try {
+            checkResponse(response);
+        } catch (Exception e) {
+            log.error("Error dispatching GET to " + url, e);
+            throw e;
+        }
 
         String body = response.getBody();
         return body;
@@ -91,7 +96,12 @@ public class RemoteRepository {
         HttpResponse<String> response = request
                 .body(RequestInfo.getBody())
                 .asString();
-        checkResponse(response);
+        try {
+            checkResponse(response);
+        } catch (Exception e) {
+            log.error("Error dispatching POST to " + request.getUrl(), e);
+            throw e;
+        }
 
         return response.getBody();
     }

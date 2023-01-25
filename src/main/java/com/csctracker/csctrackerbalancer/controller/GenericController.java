@@ -36,6 +36,25 @@ public class GenericController {
         }
     }
 
+    @GetMapping(value = "/{service}/{object}/{sub}/{sub2}", produces = "application/json")
+    public ResponseEntity<String> list(
+            @PathVariable String service,
+            @PathVariable String object,
+            @PathVariable String sub,
+            @PathVariable String sub2) {
+        return ResponseEntity.ok(genericService.get(service, object + "/" + sub + "/" + sub2));
+    }
+
+    @GetMapping(value = "/{service}/{object}/{sub}/{sub2}/{sub3}", produces = "application/json")
+    public ResponseEntity<String> list(
+            @PathVariable String service,
+            @PathVariable String object,
+            @PathVariable String sub,
+            @PathVariable String sub2,
+            @PathVariable String sub3) {
+        return ResponseEntity.ok(genericService.get(service, object + "/" + sub + "/" + sub2 + "/" + sub3));
+    }
+
     @PostMapping(value = "/{service}/{object}", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> save(@RequestBody String body, @PathVariable String service, @PathVariable String object) {

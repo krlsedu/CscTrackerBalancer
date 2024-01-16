@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>CscTrackerBalancer</artifactId>
-    <version>24.03.001</version>
+    <version>24.03.002</version>
     <name>CscTrackerBalancer</name>
 
     <properties>
